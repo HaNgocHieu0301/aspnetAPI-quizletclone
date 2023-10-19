@@ -3,7 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34024.191
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quizlet.Services.AuthAPI", "Quizlet.Services.AuthAPI\Quizlet.Services.AuthAPI.csproj", "{7DF4EB45-A734-4993-B7E9-1BAF2FCCD03B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Quizlet.Services.AuthAPI", "Quizlet.Services.AuthAPI\Quizlet.Services.AuthAPI.csproj", "{7DF4EB45-A734-4993-B7E9-1BAF2FCCD03B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Quizlet.Services.FlashcardAPI", "Quizlet.Services.FlashcardAPI\Quizlet.Services.FlashcardAPI.csproj", "{BE27A1F7-3D02-4233-8319-52E99D1C7212}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Quizlet.Services.FlashCard", "Quizlet.Services.FlashCard", "{9447F31C-2BE0-4A27-A833-01AD9C43776D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessObject", "BusinessObject\BusinessObject.csproj", "{A3FB5589-9DB0-4F9F-A77A-5A58F0444067}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{3CD38FEE-5824-4113-AB3C-DF3A4FED47DD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository", "Repository\Repository.csproj", "{DC031FC5-DD8E-42CF-91CF-F489D715E844}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,8 +25,33 @@ Global
 		{7DF4EB45-A734-4993-B7E9-1BAF2FCCD03B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7DF4EB45-A734-4993-B7E9-1BAF2FCCD03B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7DF4EB45-A734-4993-B7E9-1BAF2FCCD03B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE27A1F7-3D02-4233-8319-52E99D1C7212}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE27A1F7-3D02-4233-8319-52E99D1C7212}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE27A1F7-3D02-4233-8319-52E99D1C7212}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE27A1F7-3D02-4233-8319-52E99D1C7212}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3FB5589-9DB0-4F9F-A77A-5A58F0444067}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3FB5589-9DB0-4F9F-A77A-5A58F0444067}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3FB5589-9DB0-4F9F-A77A-5A58F0444067}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3FB5589-9DB0-4F9F-A77A-5A58F0444067}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3CD38FEE-5824-4113-AB3C-DF3A4FED47DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3CD38FEE-5824-4113-AB3C-DF3A4FED47DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3CD38FEE-5824-4113-AB3C-DF3A4FED47DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3CD38FEE-5824-4113-AB3C-DF3A4FED47DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC031FC5-DD8E-42CF-91CF-F489D715E844}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC031FC5-DD8E-42CF-91CF-F489D715E844}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC031FC5-DD8E-42CF-91CF-F489D715E844}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC031FC5-DD8E-42CF-91CF-F489D715E844}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BE27A1F7-3D02-4233-8319-52E99D1C7212} = {9447F31C-2BE0-4A27-A833-01AD9C43776D}
+		{A3FB5589-9DB0-4F9F-A77A-5A58F0444067} = {9447F31C-2BE0-4A27-A833-01AD9C43776D}
+		{3CD38FEE-5824-4113-AB3C-DF3A4FED47DD} = {9447F31C-2BE0-4A27-A833-01AD9C43776D}
+		{DC031FC5-DD8E-42CF-91CF-F489D715E844} = {9447F31C-2BE0-4A27-A833-01AD9C43776D}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8D77AB40-34EB-4C4F-B650-5E3CD66CDEBA}
 	EndGlobalSection
 EndGlobal

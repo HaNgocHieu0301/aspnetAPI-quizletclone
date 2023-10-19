@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Coding\\Git\\PRN231_FinalProject\\Quizlet.Services.AuthAPI\\Quizlet.Services.AuthAPI.csproj": {}
+    "D:\\New folder\\Web_API\\Final_Project\\Quizlet.Services.AuthAPI\\Quizlet.Services.AuthAPI.csproj": {}
   },
   "projects": {
-    "E:\\Coding\\Git\\PRN231_FinalProject\\Quizlet.Services.AuthAPI\\Quizlet.Services.AuthAPI.csproj": {
+    "D:\\New folder\\Web_API\\Final_Project\\Quizlet.Services.AuthAPI\\Quizlet.Services.AuthAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Coding\\Git\\PRN231_FinalProject\\Quizlet.Services.AuthAPI\\Quizlet.Services.AuthAPI.csproj",
+        "projectUniqueName": "D:\\New folder\\Web_API\\Final_Project\\Quizlet.Services.AuthAPI\\Quizlet.Services.AuthAPI.csproj",
         "projectName": "Quizlet.Services.AuthAPI",
-        "projectPath": "E:\\Coding\\Git\\PRN231_FinalProject\\Quizlet.Services.AuthAPI\\Quizlet.Services.AuthAPI.csproj",
-        "packagesPath": "C:\\Users\\ADMIN\\.nuget\\packages\\",
-        "outputPath": "E:\\Coding\\Git\\PRN231_FinalProject\\Quizlet.Services.AuthAPI\\obj\\",
+        "projectPath": "D:\\New folder\\Web_API\\Final_Project\\Quizlet.Services.AuthAPI\\Quizlet.Services.AuthAPI.csproj",
+        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
+        "outputPath": "D:\\New folder\\Web_API\\Final_Project\\Quizlet.Services.AuthAPI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\ADMIN\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -64,7 +64,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
         }
       }
     }
