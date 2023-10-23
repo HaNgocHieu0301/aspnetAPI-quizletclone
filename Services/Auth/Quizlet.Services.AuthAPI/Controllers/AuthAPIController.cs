@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using BusinessObject.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Quizlet.Services.AuthAPI.Models.DTO;
 using Quizlet.Services.AuthAPI.Services.IServices;
 
 namespace Quizlet.Services.AuthAPI.Controllers
@@ -20,8 +20,8 @@ namespace Quizlet.Services.AuthAPI.Controllers
 		public async Task<IActionResult> Register(RegistrationRequestDTO registrationRequestDTO)
 		{
 			var errorMessage = await _authService.Register(registrationRequestDTO);
-			var assignRoleSuccessful = await _authService.AssignRole(registrationRequestDTO.Email, registrationRequestDTO.Role.ToUpper());
-			if (!string.IsNullOrEmpty(errorMessage) || !assignRoleSuccessful)
+			//var assignRoleSuccessful = await _authService.AssignRole(registrationRequestDTO.Email, registrationRequestDTO.Role.ToUpper());
+			if (!string.IsNullOrEmpty(errorMessage))
 			{
 				_responseDTO.IsSuccess = false;
 				_responseDTO.Message = errorMessage;
@@ -44,17 +44,17 @@ namespace Quizlet.Services.AuthAPI.Controllers
 			return Ok(_responseDTO);
 		}
 
-		[HttpPost("assignRole")]
-		public async Task<IActionResult> AssignRole([FromBody] RegistrationRequestDTO model)
-		{
-			var assignRoleSuccessful = await _authService.AssignRole(model.Email, model.Role.ToUpper());
-			if (!assignRoleSuccessful)
-			{
-				_responseDTO.IsSuccess = false;
-				_responseDTO.Message = "Error encountered!";
-				return BadRequest(_responseDTO);
-			}
-			return Ok(_responseDTO);
-		}
+		//[HttpPost("assignRole")]
+		//public async Task<IActionResult> AssignRole([FromBody] RegistrationRequestDTO model)
+		//{
+		//	var assignRoleSuccessful = await _authService.AssignRole(model.Email, model.Role.ToUpper());
+		//	if (!assignRoleSuccessful)
+		//	{
+		//		_responseDTO.IsSuccess = false;
+		//		_responseDTO.Message = "Error encountered!";
+		//		return BadRequest(_responseDTO);
+		//	}
+		//	return Ok(_responseDTO);
+		//}
 	}
 }

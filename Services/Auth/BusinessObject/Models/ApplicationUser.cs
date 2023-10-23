@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace Quizlet.Services.AuthAPI.Models
+namespace BusinessObject.Models
 {
 	public class ApplicationUser : IdentityUser
 	{

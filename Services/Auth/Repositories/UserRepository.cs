@@ -1,0 +1,17 @@
+﻿using AutoMapper;
+using BusinessObject.Models;
+using DataAccess;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Repositories
+{
+	public class UserRepository : IUserRepository
+	{
+		public ApplicationUser GetUserByUserName(string username) => UserDAO.GetUserByUserName(username);
+		public ApplicationUser GetUserByEmail(string email) => UserDAO.GetUserByEmail(email);
+	}
+}

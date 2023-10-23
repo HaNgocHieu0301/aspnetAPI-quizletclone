@@ -1,4 +1,4 @@
-﻿namespace Quizlet.Services.AuthAPI.Models
+﻿namespace BusinessObject.Models
 {
 	public class JwtOptions
 	{

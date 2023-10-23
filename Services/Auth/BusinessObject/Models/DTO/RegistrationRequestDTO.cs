@@ -1,4 +1,4 @@
-﻿namespace Quizlet.Services.AuthAPI.Models.DTO
+﻿namespace BusinessObject.Models
 {
 	public class RegistrationRequestDTO
 	{

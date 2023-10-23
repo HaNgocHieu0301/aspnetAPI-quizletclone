@@ -1,4 +1,4 @@
-﻿using Quizlet.Services.AuthAPI.Models.DTO;
+﻿using BusinessObject.Models;
 
 namespace Quizlet.Services.AuthAPI.Services.IServices
 {
@@ -6,6 +6,7 @@ namespace Quizlet.Services.AuthAPI.Services.IServices
 	{
 		Task<string> Register(RegistrationRequestDTO registrationRequestDTO);
 		Task<LoginResponseDTO> Login(LoginRequestDTO loginRequestDTO);
-		Task<bool> AssignRole(string email, string roleName);
+		//Task<bool> AssignRole(string email, string roleName);
+		Task<bool> AssignRole(ApplicationUser user, string roleName);
 	}
 }

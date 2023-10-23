@@ -1,29 +1,28 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Quizlet.Services.AuthAPI.Data;
-using Quizlet.Services.AuthAPI.Models;
-using Quizlet.Services.AuthAPI.Models.DTO;
+﻿using BusinessObject.Models;
+using Microsoft.AspNetCore.Identity;
 using Quizlet.Services.AuthAPI.Services.IServices;
+using Repositories;
 using System;
 
 namespace Quizlet.Services.AuthAPI.Services
 {
 	public class AuthService : IAuthService
 	{
-		private readonly AppDbContext _db;
+		private readonly IUserRepository _userRepository;
 		private readonly UserManager<ApplicationUser> _userManager;
 		private readonly RoleManager<IdentityRole> _roleManager;
 		private readonly IJwtTokenGenerator _jwtTokenGenerator;
-		public AuthService(AppDbContext db, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IJwtTokenGenerator jwtTokenGenerator)
+		public AuthService(IUserRepository userRepository, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IJwtTokenGenerator jwtTokenGenerator)
 		{
-			_db = db;
+			_userRepository = userRepository;
 			_userManager = userManager;
 			_roleManager = roleManager;
 			_jwtTokenGenerator = jwtTokenGenerator;
 		}
 		public async Task<LoginResponseDTO> Login(LoginRequestDTO loginRequestDTO)
 		{
-			var user = _db.Users.FirstOrDefault(u => u.UserName.ToLower() == loginRequestDTO.UserName.ToLower());
-
+			//var user = _db.Users.FirstOrDefault(u => u.UserName.ToLower() == loginRequestDTO.UserName.ToLower());
+			ApplicationUser user = _userRepository.GetUserByUserName(loginRequestDTO.UserName);
 			bool isValid = await _userManager.CheckPasswordAsync(user, loginRequestDTO.Password);
 
 			if (user == null || !isValid)
@@ -68,15 +67,16 @@ namespace Quizlet.Services.AuthAPI.Services
 				var result = await _userManager.CreateAsync(user, registrationRequestDTO?.Password);
 				if (result.Succeeded)
 				{
-					var userToReturn = _db.Users.First(u => u.Email == registrationRequestDTO.Email);
-					UserDTO userDTO = new()
-					{
-						Email = userToReturn.Email,
-						Id = userToReturn.Id,
-						UserName = userToReturn.UserName,
-						Streak = 1,
-						UsingTimeDay = 0,
-					};
+					var assignRoleResult = await AssignRole(user, registrationRequestDTO.Role);
+					var userToReturn = _userRepository.GetUserByEmail(user.Email);
+					//UserDTO userDTO = new()
+					//{
+					//	Email = userToReturn.Email,
+					//	Id = userToReturn.Id,
+					//	UserName = userToReturn.UserName,
+					//	Streak = 1,
+					//	UsingTimeDay = 0,
+					//};
 					return "";
 				}
 				else
@@ -90,9 +90,10 @@ namespace Quizlet.Services.AuthAPI.Services
 			}
 			return "Error Encountered";
 		}
-		public async Task<bool> AssignRole(string email, string roleName)
+		public async Task<bool> AssignRole(ApplicationUser user, string roleName)
 		{
-			var user = _db.Users.FirstOrDefault(u => u.Email.ToLower() == email.ToLower());
+			//var user = _db.Users.FirstOrDefault(u => u.Email.ToLower() == email.ToLower());
+			//var user = _userRepository.GetUserByEmail(email);
 			if (user != null)
 			{
 				if (!_roleManager.RoleExistsAsync(roleName).GetAwaiter().GetResult())

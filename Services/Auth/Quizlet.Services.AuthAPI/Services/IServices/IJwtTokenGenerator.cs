@@ -1,4 +1,4 @@
-﻿using Quizlet.Services.AuthAPI.Models;
+﻿using BusinessObject.Models;
 
 namespace Quizlet.Services.AuthAPI.Services.IServices
 {

@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.Options;
+﻿using BusinessObject.Models;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Quizlet.Services.AuthAPI.Models;
 using Quizlet.Services.AuthAPI.Services.IServices;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
