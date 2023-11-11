@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Quizlet.Services.AuthAPI.Services.IServices;
@@ -44,17 +45,42 @@ namespace Quizlet.Services.AuthAPI.Controllers
 			return Ok(_responseDTO);
 		}
 
-		//[HttpPost("assignRole")]
-		//public async Task<IActionResult> AssignRole([FromBody] RegistrationRequestDTO model)
-		//{
-		//	var assignRoleSuccessful = await _authService.AssignRole(model.Email, model.Role.ToUpper());
-		//	if (!assignRoleSuccessful)
-		//	{
-		//		_responseDTO.IsSuccess = false;
-		//		_responseDTO.Message = "Error encountered!";
-		//		return BadRequest(_responseDTO);
-		//	}
-		//	return Ok(_responseDTO);
-		//}
+		[HttpPost("assign-role")]
+		public async Task<IActionResult> AssignRole([FromBody] RegistrationRequestDTO model)
+		{
+			var assignRoleSuccessful = await _authService.AssignRole(model.Email, model.Role.ToUpper());
+			if (!assignRoleSuccessful)
+			{
+				_responseDTO.IsSuccess = false;
+				_responseDTO.Message = "Error encountered!";
+				return BadRequest(_responseDTO);
+			}
+			return Ok(_responseDTO);
+		}
+
+		[HttpPost("forgot-password")]
+		public async Task<IActionResult> ForgotPassword([FromBody] string email)
+		{
+			//var user = 
+			return Ok();
+		}
+		[HttpPost("refresh-token")]
+		public async Task<IActionResult> RefreshToken([FromBody] string email)
+		{
+			//var user = 
+			return Ok();
+		}
+		[HttpPost("validate-reset-token")]
+		public async Task<IActionResult> CheckResetToken([FromBody] string email)
+		{
+			//var user = 
+			return Ok();
+		}
+		[HttpPost("revoke-token")]
+		public async Task<IActionResult> RevokeToken([FromBody] string email)
+		{
+			//var user = 
+			return Ok();
+		}
 	}
 }

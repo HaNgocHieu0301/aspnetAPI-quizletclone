@@ -9,7 +9,9 @@ namespace Repositories
 {
 	public interface IUserRepository
 	{
-		ApplicationUser GetUserByUserName(string username);
-		ApplicationUser GetUserByEmail(string email);
+		Task<ApplicationUser> GetUserByUserNameAsync(string username);
+		Task<ApplicationUser> GetUserByEmailAsync(string email);
+		Task<bool> CheckPasswordAsync(ApplicationUser user, string password);
+		Task<IList<string>> GetRolesAsync(ApplicationUser user);
 	}
 }
