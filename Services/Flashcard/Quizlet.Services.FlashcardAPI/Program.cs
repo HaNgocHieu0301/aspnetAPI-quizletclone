@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.OData;
 using Microsoft.AspNetCore.OData.Routing;
 using Microsoft.OData.Edm;
 using Microsoft.OData.ModelBuilder;
+using Repository;
+using Repository.IRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +20,12 @@ static IEdmModel GetEdmModel()
 }
 
 builder.Services.AddControllers();
+
+builder.Services.AddScoped<IAnswerRepository, AnswerRepository>();
+builder.Services.AddScoped<ILessonRepository, LessonRepository>();
+builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
+
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

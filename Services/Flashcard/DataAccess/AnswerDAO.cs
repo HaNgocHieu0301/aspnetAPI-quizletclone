@@ -9,7 +9,6 @@ namespace DataAccess
     {
         private static readonly ServicesFlashCardContext context = ServicesFlashCardContext.GetInstance();
         private static readonly IMapper mapper = Config.Initialize();
-
         public static List<Answer> GetAnswers() => context.Answers.AsNoTracking().ToList();
 
         public static void AddAnswer(Answer answer)

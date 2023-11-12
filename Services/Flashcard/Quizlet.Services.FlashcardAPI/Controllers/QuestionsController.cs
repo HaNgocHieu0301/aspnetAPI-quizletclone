@@ -9,7 +9,46 @@ namespace Quizlet.Services.FlashcardAPI.Controllers
 {
     public class QuestionsController : ODataController
     {
-        private static readonly IQuestionRepository QuestionRepository = new QuestionRepository();
+        private readonly IQuestionRepository QuestionRepository;
+
+        public QuestionsController(IQuestionRepository questionRepository)
+        {
+            QuestionRepository = questionRepository;
+        }
+
+        #region Hieuhn_GetMethods
+
+        [HttpGet("GetByUserId/{userId}")]
+        [EnableQuery]
+        public IActionResult GetByUserId(string userId)
+        {
+            try
+            {
+                return Ok(QuestionRepository.GetQuestions());
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+
+        [HttpGet("GetByLessonId/{lessonId}")]
+        [EnableQuery]
+        public IActionResult GetByUserId(int lessonId)
+        {
+            try
+            {
+                return Ok(QuestionRepository.GetQuestions());
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+        #endregion
+
+        #region Hungnm_CRUD
+
         [EnableQuery]
         public IActionResult Get()
         {
@@ -103,5 +142,7 @@ namespace Quizlet.Services.FlashcardAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
+
+        #endregion
     }
 }
