@@ -2,13 +2,13 @@
 using BusinessObject.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
-using Microsoft.AspNetCore.OData.Routing.Controllers;
-using Repository;
 using Repository.IRepository;
 
 namespace Quizlet.Services.FlashcardAPI.Controllers
 {
-    public class QuestionsController : ODataController
+    [Route("api/[controller]")]
+    [ApiController]
+    public class QuestionsController : ControllerBase
     {
         private readonly IQuestionRepository QuestionRepository;
         private readonly IQuestionService QuestionService;
@@ -20,7 +20,7 @@ namespace Quizlet.Services.FlashcardAPI.Controllers
 
         #region Hieuhn_GetMethods
 
-        [HttpGet("/GetByUserId/{userId}")]
+        [HttpGet("GetByUserId/{userId}")]
         [EnableQuery]
         public IActionResult GetByUserId(string userId)
         {
@@ -34,7 +34,7 @@ namespace Quizlet.Services.FlashcardAPI.Controllers
             }
         }
 
-        [HttpGet("/api/[controller]/GetByLessonId/{lessonId}")]
+        [HttpGet("GetByLessonId/{lessonId}")]
         [EnableQuery]
         public IActionResult GetByUserId(int lessonId)
         {
@@ -52,6 +52,7 @@ namespace Quizlet.Services.FlashcardAPI.Controllers
 
         #region Hungnm_CRUD
 
+        [HttpGet]
         [EnableQuery]
         public IActionResult Get()
         {
@@ -65,7 +66,7 @@ namespace Quizlet.Services.FlashcardAPI.Controllers
             }
         }
 
-        [EnableQuery]
+        [HttpPost]
         public IActionResult Post([FromBody] AddQuestionDTO addQuestionDTO)
         {
             try
@@ -79,7 +80,7 @@ namespace Quizlet.Services.FlashcardAPI.Controllers
             }
         }
 
-        [HttpPost("/api/[controller]/Range")]
+        [HttpPost("Range")]
         public IActionResult PostRange([FromBody] List<AddQuestionDTO> addQuestionDTOs)
         {
             try
@@ -92,7 +93,7 @@ namespace Quizlet.Services.FlashcardAPI.Controllers
             }
         }
 
-        [HttpDelete("/api/[controller]/DeleteQuestion/{key}")]
+        [HttpDelete("DeleteQuestion/{key}")]
         public IActionResult Delete([FromRoute] int key)
         {
             try
@@ -106,7 +107,7 @@ namespace Quizlet.Services.FlashcardAPI.Controllers
             }
         }
 
-        [HttpDelete("/api/[controller]/DeleteQuestions")]
+        [HttpDelete("DeleteQuestions")]
         public IActionResult DeleteRange([FromBody] List<QuestionDTO> questionDTOs)
         {
             try
@@ -119,8 +120,8 @@ namespace Quizlet.Services.FlashcardAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
-        
-        [HttpPut("/api/[controller]/UpdateQuestion/{key}")]
+
+        [HttpPut("UpdateQuestion/{key}")]
         public IActionResult Put([FromRoute] int key, [FromBody] EditQuestionDTO editQuestionDTO)
         {
             try
@@ -134,7 +135,7 @@ namespace Quizlet.Services.FlashcardAPI.Controllers
             }
         }
 
-        [HttpPut("/api/[controller]/UpdateQuestion")]
+        [HttpPut("UpdateQuestion")]
         public IActionResult Put([FromBody] EditQuestionDTO editQuestionDto)
         {
             try
@@ -148,7 +149,7 @@ namespace Quizlet.Services.FlashcardAPI.Controllers
             }
         }
 
-        [HttpPut("/api/[controller]/UpdateQuestions")]
+        [HttpPut("UpdateQuestions")]
         public IActionResult PutRange([FromBody] List<EditQuestionDTO> questionDTOs)
         {
             try

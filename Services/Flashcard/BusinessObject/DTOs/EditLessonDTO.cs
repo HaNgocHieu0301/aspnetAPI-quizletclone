@@ -11,5 +11,6 @@ namespace BusinessObject.DTOs
         public int VisibleId { get; set; }
         public int? FolderId { get; set; }
         public double? Rate { get; set; }
+        public string UserId { get; set; }
     }
 }

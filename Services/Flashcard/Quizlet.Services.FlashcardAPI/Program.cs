@@ -1,9 +1,6 @@
-using BusinessObject.Models;
 using BusinessObject.Services.Interfaces;
 using Microsoft.AspNetCore.OData;
 using Microsoft.AspNetCore.OData.Routing;
-using Microsoft.OData.Edm;
-using Microsoft.OData.ModelBuilder;
 using Quizlet.Services.FlashcardAPI.Services.Implementations;
 using Repository;
 using Repository.IRepository;
@@ -12,14 +9,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-static IEdmModel GetEdmModel()
-{
-    ODataConventionModelBuilder o = new();
-    o.EntitySet<Lesson>("Lessons");
-    o.EntitySet<Answer>("Answers");
-    o.EntitySet<Question>("Questions");
-    return o.GetEdmModel();
-}
 builder.Services.AddControllers();
 
 builder.Services.AddCors();
@@ -33,7 +22,7 @@ builder.Services.AddScoped<IQuestionService, QuestionService>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddControllers().AddOData(option => option.Select().Filter().Count().OrderBy().Expand().SetMaxTop(100).AddRouteComponents("odata", GetEdmModel()));
+builder.Services.AddControllers().AddOData(option => option.Select().Filter().Count().OrderBy().Expand().SetMaxTop(100));
 
 var app = builder.Build();
 app.UseCors(b =>

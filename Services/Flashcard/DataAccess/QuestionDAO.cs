@@ -11,7 +11,7 @@ namespace DataAccess
 
         private static readonly IMapper mapper = Config.Initialize();
 
-        public static List<Question> GetQuestions() => context.Questions.Include(d => d.Answers).AsNoTracking().ToList();
+        public static List<Question> GetQuestions() => context.Questions.Include(d => d.Answers).AsNoTracking().AsQueryable().ToList();
 
         public static int AddQuestion(Question question)
         {

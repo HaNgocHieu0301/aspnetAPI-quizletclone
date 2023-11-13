@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace BusinessObject.Models
+﻿namespace BusinessObject.Models
 {
     public partial class Lesson
     {
@@ -18,6 +15,7 @@ namespace BusinessObject.Models
         public int VisibleId { get; set; }
         public int? FolderId { get; set; }
         public double? Rate { get; set; }
+        public string UserId { get; set; }
 
         public virtual ICollection<Question> Questions { get; set; }
     }
