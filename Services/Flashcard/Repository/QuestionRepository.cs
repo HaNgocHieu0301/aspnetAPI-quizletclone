@@ -23,9 +23,17 @@ namespace Repository
             return QuestionDAO.AddRangeQuestion(questions);
         }
 
+        public List<Question> AddRangeQuestion(List<QuestionDTO> addQuestionDTOs)
+        {
+            List<Question> questions = mapper.Map<List<Question>>(addQuestionDTOs);
+            return QuestionDAO.AddRangeQuestion(questions);
+        }
+
         public void DeleteQuestion(int id)
         {
             Question Question = QuestionDAO.GetQuestionById(id);
+            var answers = AnswerDAO.GetAnswers().Where(o => o.QuestionId == Question.QuestionId).ToList();
+            AnswerDAO.DeleteRangeAnswer(answers);
             QuestionDAO.DeleteQuestion(Question);
         }
 
@@ -52,6 +60,13 @@ namespace Repository
         public void UpdateRangeQuestion(List<QuestionDTO> questionDTOs)
         {
             List<Question> questions = mapper.Map<List<Question>>(questionDTOs);
+            QuestionDAO.UpdateRangeQuestion(questions);
+        }
+        
+        public void UpdateRangeQuestion(List<EditQuestionDTO> questionDTOs)
+        {
+            List<Question> questions = new List<Question>();
+            mapper.Map(questionDTOs,questions);
             QuestionDAO.UpdateRangeQuestion(questions);
         }
     }

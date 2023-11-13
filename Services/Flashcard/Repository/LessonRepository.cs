@@ -17,7 +17,12 @@ namespace Repository
             lesson.CreateAt = DateTime.Now;
             return LessonDAO.AddLesson(lesson);
         }
-
+        public int AddLesson(AddLessonWithQuestionDTO lessonDTO)
+        {
+            Lesson lesson = mapper.Map<Lesson>(lessonDTO);
+            lesson.CreateAt = DateTime.Now;
+            return LessonDAO.AddLesson(lesson);
+        }
         public void DeleteLesson(int id)
         {
             Lesson lesson = LessonDAO.GetLessonById(id);
