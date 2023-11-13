@@ -149,7 +149,7 @@ namespace Quizlet.Services.AuthAPI.Services
             if (user != null)
             {
                 var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var frontendResetPasswordUrl = "http://localhost:/reset-password";
+                var frontendResetPasswordUrl = "http://localhost:3000/recover";
                 var resetUrl =
                     $"{frontendResetPasswordUrl}?token={HttpUtility.UrlEncode(token)}&email={HttpUtility.UrlEncode(email)}";
                 ResponseFogetPasswordWithToken responseFogetPasswordWithToken = new()
