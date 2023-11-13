@@ -9,7 +9,6 @@ namespace BusinessObject.Models
         public string? Image { get; set; }
         public string Definition { get; set; } = null!;
         public int QuestionId { get; set; }
-
         public virtual Question Question { get; set; } = null!;
     }
 }

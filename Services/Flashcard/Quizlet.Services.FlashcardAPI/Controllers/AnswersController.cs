@@ -50,8 +50,10 @@ namespace Quizlet.Services.FlashcardAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
-
-        public IActionResult Delete([FromRoute] int key)
+    
+        [HttpDelete("/api/[controller]/DeleteAnswer/{key}")]
+        [EnableQuery]
+        public IActionResult DeleteAnswer([FromRoute]int key)
         {
             try
             {

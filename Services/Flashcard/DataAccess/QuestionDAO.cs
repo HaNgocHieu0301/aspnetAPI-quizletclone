@@ -96,6 +96,15 @@ namespace DataAccess
             using var transaction = context.Database.BeginTransaction();
             try
             {
+                // Detach any existing entities with the same key
+                foreach (var question in questions)
+                {
+                    var existingEntity = context.Questions.Local.FirstOrDefault(q => q.QuestionId == question.QuestionId);
+                    if (existingEntity != null)
+                    {
+                        context.Entry(existingEntity).State = EntityState.Detached;
+                    }
+                }
                 context.UpdateRange(questions);
                 context.SaveChanges();
                 context.ChangeTracker.Clear();

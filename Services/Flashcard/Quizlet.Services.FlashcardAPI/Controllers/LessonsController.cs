@@ -22,9 +22,9 @@ namespace Quizlet.Services.FlashcardAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
-
-        [EnableQuery]
-        public IActionResult Post([FromBody] LessonDTO lessonDTO)
+        
+        [HttpPost("/api/[controller]/AddLessonWithoutQuestions")]
+        public IActionResult AddLessonWithoutQuestions([FromBody] LessonDTO lessonDTO)
         {
             try
             {
@@ -36,7 +36,20 @@ namespace Quizlet.Services.FlashcardAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
-
+        
+        [HttpPost("/api/[controller]/AddLessonWithQuestions")]
+        public IActionResult AddLessonWithQuestions([FromBody] AddLessonWithQuestionDTO lessonDTO)
+        {
+            try
+            {
+                lessonRepository.AddLesson(lessonDTO);
+                return Created("Create new lesson successfully", null);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
         public IActionResult Delete([FromRoute] int key)
         {
             try
@@ -49,7 +62,6 @@ namespace Quizlet.Services.FlashcardAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
-
         public IActionResult Put([FromRoute] int key, [FromBody] EditLessonDTO editLessonDTO)
         {
             try

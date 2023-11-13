@@ -12,9 +12,12 @@ namespace DataAccess.Mapper
             CreateMap<QuestionDTO, Question>().ReverseMap();
             CreateMap<AnswerDTO, Answer>().ReverseMap();
             CreateMap<EditAnswerDTO, Answer>().ReverseMap();
+            CreateMap<EditAnswerDTO, AnswerDTO>().ReverseMap();
             CreateMap<EditLessonDTO, Lesson>().ReverseMap();
             CreateMap<EditQuestionDTO, Question>().ReverseMap();
+            CreateMap<EditQuestionDTO, QuestionDTO>().ReverseMap();
             CreateMap<AddQuestionDTO, Question>().ReverseMap();
+            CreateMap<AddLessonWithQuestionDTO, Lesson>().ReverseMap();
         }
 
         public static IMapper Initialize()
