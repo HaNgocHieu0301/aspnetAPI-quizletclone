@@ -28,10 +28,15 @@ namespace Repository
         public void DeleteLesson(int id)
         {
             Lesson lesson = LessonDAO.GetLessonById(id);
+            List<Question> questions = QuestionDAO.GetQuestions().Where(o => o.LessonId == id).ToList();
+            QuestionDAO.DeleteRangeQuestion(questions);
             LessonDAO.DeleteLesson(lesson);
         }
 
-        public List<Lesson> GetLessons() => LessonDAO.GetLessons();
+        public List<LessonDTO> GetLessons()
+        {
+            return mapper.Map<List<LessonDTO>>(LessonDAO.GetLessons());
+        }
 
         public bool UpdateLesson(EditLessonDTO editLessonDTO)
         {

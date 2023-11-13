@@ -113,6 +113,20 @@ namespace Quizlet.Services.AuthAPI.Controllers
             _responseDTO.Message = "Cannot reset password!";
             return BadRequest(_responseDTO);
         }
+        [HttpPost("change-password")]
+        public async Task<IActionResult> ForgotPassword([FromBody] RequestChangePasswordDTO request)
+        {
+            var res = await _authService.ChangePassword(request);
+            if (res)
+            {
+                _responseDTO.IsSuccess = true;
+                _responseDTO.Message = "Change password successfully!";
+                return Ok(_responseDTO);
+            }
+            _responseDTO.IsSuccess = false;
+            _responseDTO.Message = "Cannot Change password!";
+            return BadRequest(_responseDTO);
+        }
         // [HttpPost("refresh-token")]
         // public async Task<IActionResult> RefreshToken([FromBody] string email)
         // {

@@ -183,6 +183,23 @@ namespace Quizlet.Services.AuthAPI.Services
             return false;
         }
 
+        public async Task<bool> ChangePassword(RequestChangePasswordDTO request)
+        {
+            var user = await _userManager.FindByEmailAsync(request.email);
+            if (user == null)
+                return false;
+
+            if (request.newPassword != request.confirmNewPassword)
+                return false;
+
+            var changePasswordResult = await _userManager.ChangePasswordAsync(user, request.oldPassword, request.newPassword);
+            if (!changePasswordResult.Succeeded)
+            {
+                return false;
+            }
+            return true;
+        }
+
         public async Task<bool> CheckEmailExist(string email)
         {
             var check = await _userManager.FindByEmailAsync(email);

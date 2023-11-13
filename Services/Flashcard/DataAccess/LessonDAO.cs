@@ -10,7 +10,7 @@ namespace DataAccess
         public static List<Lesson> GetLessons()
         {
             using var context = new ServicesFlashCardContext();
-            return context.Lessons.AsNoTracking().AsQueryable().ToList();
+            return context.Lessons.Include(l => l.Questions).AsNoTracking().AsQueryable().ToList();
         }
 
         public static int AddLesson(Lesson lesson)
