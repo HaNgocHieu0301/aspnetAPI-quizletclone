@@ -28,6 +28,8 @@ namespace Repository
         public void DeleteLesson(int id)
         {
             Lesson lesson = LessonDAO.GetLessonById(id);
+            List<Question> questions = QuestionDAO.GetQuestions().Where(o => o.LessonId == id).ToList();
+            QuestionDAO.DeleteRangeQuestion(questions);
             LessonDAO.DeleteLesson(lesson);
         }
 

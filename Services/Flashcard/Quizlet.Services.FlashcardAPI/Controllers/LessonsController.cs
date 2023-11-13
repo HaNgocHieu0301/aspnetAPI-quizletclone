@@ -50,8 +50,8 @@ namespace Quizlet.Services.FlashcardAPI.Controllers
         {
             try
             {
-                lessonRepository.AddLesson(lessonDTO);
-                return Created("Create new lesson successfully", null);
+                int lessonId = lessonRepository.AddLesson(lessonDTO);
+                return Created("Create new lesson successfully", lessonId);
             }
             catch (Exception e)
             {
@@ -59,8 +59,8 @@ namespace Quizlet.Services.FlashcardAPI.Controllers
             }
         }
 
-        [HttpDelete]
-        public IActionResult Delete([FromRoute] int key)
+        [HttpDelete("DeleteLesson/{key}")]
+        public IActionResult Delete(int key)
         {
             try
             {

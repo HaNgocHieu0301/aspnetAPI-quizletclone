@@ -14,6 +14,5 @@ namespace BusinessObject.DTOs
         public double? Rate { get; set; }
         public string UserId { get; set; }
         public ICollection<QuestionDTO> Questions { get; set; }
-
     }
 }
