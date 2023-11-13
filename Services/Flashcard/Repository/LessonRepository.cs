@@ -29,7 +29,10 @@ namespace Repository
             LessonDAO.DeleteLesson(lesson);
         }
 
-        public List<Lesson> GetLessons() => LessonDAO.GetLessons();
+        public List<LessonDTO> GetLessons()
+        {
+            return mapper.Map<List<LessonDTO>>(LessonDAO.GetLessons());
+        }
 
         public void UpdateLesson(int id, EditLessonDTO editLessonDTO)
         {

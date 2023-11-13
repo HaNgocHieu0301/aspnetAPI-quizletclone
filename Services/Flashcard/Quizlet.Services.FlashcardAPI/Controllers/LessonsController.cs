@@ -9,7 +9,13 @@ namespace Quizlet.Services.FlashcardAPI.Controllers
 {
     public class LessonsController : ODataController
     {
-        private static readonly ILessonRepository lessonRepository = new LessonRepository();
+        private readonly ILessonRepository lessonRepository;
+
+        public LessonsController(ILessonRepository lessonRepository)
+        {
+            this.lessonRepository = lessonRepository;
+        }
+
         [EnableQuery]
         public IActionResult Get()
         {

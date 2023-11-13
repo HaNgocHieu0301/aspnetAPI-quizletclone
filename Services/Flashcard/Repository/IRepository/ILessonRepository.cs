@@ -5,7 +5,7 @@ namespace Repository.IRepository
 {
     public interface ILessonRepository
     {
-        List<Lesson> GetLessons();
+        List<LessonDTO> GetLessons();
         int AddLesson(LessonDTO lessonDTO);
         int AddLesson(AddLessonWithQuestionDTO lessonDTO);
         void UpdateLesson(int id, EditLessonDTO editLessonDTO);
