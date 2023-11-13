@@ -14,7 +14,7 @@ public class EmailService : IEmailService
     public EmailService(MailSettings mailSettings)
     {
         _settings = mailSettings;
-        _smtpClient = new SmtpClient();
+        
     }
     public async Task RegisterUserEmailAndSend(string? email,CancellationToken cancellationToken = new CancellationToken())
     {
@@ -61,19 +61,17 @@ public class EmailService : IEmailService
 
         try
         {
+            using var _smtpClient = new SmtpClient();
             await _smtpClient.ConnectAsync(_settings.Server, _settings.Port, _settings.UseSsl, cancellationToken);
             await _smtpClient.AuthenticateAsync(_settings.UserName, _settings.Password, cancellationToken);
             await _smtpClient.SendAsync(emailMessage, cancellationToken);
             await _smtpClient.DisconnectAsync(true, cancellationToken);
+            _smtpClient.Dispose();
         }
         catch (Exception e)
         {
+            Console.WriteLine(e.Message);
             throw;
-        }
-        finally
-        {
-            await _smtpClient.DisconnectAsync(true, cancellationToken);
-            _smtpClient.Dispose();
         }
     }
 
