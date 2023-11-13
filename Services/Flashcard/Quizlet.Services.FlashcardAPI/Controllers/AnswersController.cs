@@ -10,7 +10,12 @@ namespace Quizlet.Services.FlashcardAPI.Controllers
     [ApiController]
     public class AnswersController : ControllerBase
     {
-        private static readonly IAnswerRepository AnswerRepository = new AnswerRepository();
+        private readonly IAnswerRepository AnswerRepository;
+
+        public AnswersController(IAnswerRepository answerRepository)
+        {
+            AnswerRepository = answerRepository;
+        }
 
         [EnableQuery]
         [HttpGet]

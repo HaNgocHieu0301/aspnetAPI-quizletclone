@@ -7,16 +7,21 @@ namespace DataAccess
 {
     public class QuestionDAO
     {
-        private static readonly ServicesFlashCardContext context = ServicesFlashCardContext.GetInstance();
+        // private static readonly ServicesFlashCardContext context = ServicesFlashCardContext.GetInstance();
 
         private static readonly IMapper mapper = Config.Initialize();
 
-        public static List<Question> GetQuestions() => context.Questions.Include(d => d.Answers).AsNoTracking().AsQueryable().ToList();
+        public static List<Question> GetQuestions()
+        {
+            using var context = new ServicesFlashCardContext();
+            return context.Questions.Include(d => d.Answers).AsNoTracking().AsQueryable().ToList();
+        }
 
         public static int AddQuestion(Question question)
         {
             try
             {
+                using var context = new ServicesFlashCardContext();
                 context.Questions.Add(question);
                 context.SaveChanges();
                 context.ChangeTracker.Clear();
@@ -30,6 +35,7 @@ namespace DataAccess
 
         public static List<Question> AddRangeQuestion(List<Question> questions)
         {
+            using var context = new ServicesFlashCardContext();
             using var transaction = context.Database.BeginTransaction();
             try
             {
@@ -50,6 +56,7 @@ namespace DataAccess
         {
             try
             {
+                using var context = new ServicesFlashCardContext();
                 context.Questions.Remove(question);
                 context.SaveChanges();
                 context.ChangeTracker.Clear();
@@ -62,6 +69,7 @@ namespace DataAccess
 
         public static void DeleteRangeQuestion(List<Question> questions)
         {
+            using var context = new ServicesFlashCardContext();
             using var transaction = context.Database.BeginTransaction();
             try
             {
@@ -81,6 +89,7 @@ namespace DataAccess
         {
             try
             {
+                using var context = new ServicesFlashCardContext();
                 context.Questions.Update(question);
                 context.SaveChanges();
                 context.ChangeTracker.Clear();
@@ -93,6 +102,7 @@ namespace DataAccess
 
         public static void UpdateRangeQuestion(List<Question> questions)
         {
+            using var context = new ServicesFlashCardContext();
             using var transaction = context.Database.BeginTransaction();
             try
             {
@@ -121,6 +131,7 @@ namespace DataAccess
         {
             try
             {
+                using var context = new ServicesFlashCardContext();
                 return context.Questions.AsNoTracking().SingleOrDefault(c => c.QuestionId == id) ?? throw new Exception("Question does not exist");
             }
             catch (Exception)

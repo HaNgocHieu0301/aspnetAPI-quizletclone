@@ -5,16 +5,16 @@ namespace BusinessObject.Models
 {
     public partial class ServicesFlashCardContext : DbContext
     {
-        private static ServicesFlashCardContext instance;
+        // private static ServicesFlashCardContext instance;
 
         public ServicesFlashCardContext()
         {
         }
 
-        public static ServicesFlashCardContext GetInstance()
-        {
-            return instance ??= new ServicesFlashCardContext();
-        }
+        // public static ServicesFlashCardContext GetInstance()
+        // {
+        //     return instance ??= new ServicesFlashCardContext();
+        // }
 
         public ServicesFlashCardContext(DbContextOptions<ServicesFlashCardContext> options)
             : base(options)
