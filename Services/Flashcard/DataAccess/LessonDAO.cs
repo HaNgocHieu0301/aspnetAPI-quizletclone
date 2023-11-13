@@ -7,7 +7,7 @@ namespace DataAccess
     {
         private static readonly ServicesFlashCardContext context = ServicesFlashCardContext.GetInstance();
 
-        public static List<Lesson> GetLessons() => context.Lessons.AsNoTracking().ToList();
+        public static List<Lesson> GetLessons() => context.Lessons.AsNoTracking().AsQueryable().ToList();
 
         public static int AddLesson(Lesson lesson)
         {

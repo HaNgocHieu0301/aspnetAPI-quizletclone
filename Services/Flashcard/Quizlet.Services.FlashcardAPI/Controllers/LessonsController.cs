@@ -1,15 +1,17 @@
 ﻿using BusinessObject.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
-using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Repository;
 using Repository.IRepository;
 
 namespace Quizlet.Services.FlashcardAPI.Controllers
 {
-    public class LessonsController : ODataController
+    [Route("api/[controller]")]
+    [ApiController]
+    public class LessonsController : ControllerBase
     {
         private static readonly ILessonRepository lessonRepository = new LessonRepository();
+        [HttpGet]
         [EnableQuery]
         public IActionResult Get()
         {
@@ -22,8 +24,8 @@ namespace Quizlet.Services.FlashcardAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
-        
-        [HttpPost("/api/[controller]/AddLessonWithoutQuestions")]
+
+        [HttpPost("AddLessonWithoutQuestions")]
         public IActionResult AddLessonWithoutQuestions([FromBody] LessonDTO lessonDTO)
         {
             try
@@ -36,8 +38,8 @@ namespace Quizlet.Services.FlashcardAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
-        
-        [HttpPost("/api/[controller]/AddLessonWithQuestions")]
+
+        [HttpPost("AddLessonWithQuestions")]
         public IActionResult AddLessonWithQuestions([FromBody] AddLessonWithQuestionDTO lessonDTO)
         {
             try
@@ -50,6 +52,8 @@ namespace Quizlet.Services.FlashcardAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
+
+        [HttpDelete]
         public IActionResult Delete([FromRoute] int key)
         {
             try
@@ -62,6 +66,8 @@ namespace Quizlet.Services.FlashcardAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
+
+        [HttpPut]
         public IActionResult Put([FromRoute] int key, [FromBody] EditLessonDTO editLessonDTO)
         {
             try
