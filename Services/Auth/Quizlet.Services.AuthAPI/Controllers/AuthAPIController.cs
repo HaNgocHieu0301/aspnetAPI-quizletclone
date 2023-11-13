@@ -10,11 +10,13 @@ namespace Quizlet.Services.AuthAPI.Controllers
     {
         private readonly IAuthService _authService;
         private readonly ResponseDTO _responseDTO;
+
         public AuthAPIController(IAuthService authService)
         {
             _authService = authService;
             _responseDTO = new();
         }
+
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegistrationRequestDTO registrationRequestDTO)
         {
@@ -26,6 +28,7 @@ namespace Quizlet.Services.AuthAPI.Controllers
                 _responseDTO.Message = errorMessage;
                 return BadRequest(_responseDTO);
             }
+
             return Ok(_responseDTO);
         }
 
@@ -39,6 +42,7 @@ namespace Quizlet.Services.AuthAPI.Controllers
                 _responseDTO.Message = "Login Failed!\n Username or password is incorrect! ";
                 return BadRequest(_responseDTO);
             }
+
             _responseDTO.Result = loginResponseDTO;
             return Ok(_responseDTO);
         }
@@ -77,32 +81,50 @@ namespace Quizlet.Services.AuthAPI.Controllers
                 _responseDTO.Message = "Error encountered!";
                 return BadRequest(_responseDTO);
             }
+
             return Ok(_responseDTO);
         }
 
         [HttpPost("forgot-password")]
         public async Task<IActionResult> ForgotPassword([FromBody] string email)
         {
-            //var user = 
-            return Ok();
+            var res = await _authService.RequestPasswordReset(email);
+            if (res)
+            {
+                _responseDTO.IsSuccess = true;
+                _responseDTO.Message = "Reset password link sent to your email!";
+                return Ok(_responseDTO);
+            }
+            _responseDTO.IsSuccess = false;
+            _responseDTO.Message = "Having error when request change password!";
+            return BadRequest(_responseDTO);
         }
-        [HttpPost("refresh-token")]
-        public async Task<IActionResult> RefreshToken([FromBody] string email)
+        [HttpPost("change-password-with-token")]
+        public async Task<IActionResult> ForgotPassword([FromBody] RequestChangePasswordWithToken request)
         {
-            //var user = 
-            return Ok();
+            var res = await _authService.ResetPassword(request);
+            if (res)
+            {
+                _responseDTO.IsSuccess = true;
+                _responseDTO.Message = "Reset password successfully!";
+                return Ok(_responseDTO);
+            }
+            _responseDTO.IsSuccess = false;
+            _responseDTO.Message = "Cannot reset password!";
+            return BadRequest(_responseDTO);
         }
-        [HttpPost("validate-reset-token")]
-        public async Task<IActionResult> CheckResetToken([FromBody] string email)
-        {
-            //var user = 
-            return Ok();
-        }
-        [HttpPost("revoke-token")]
-        public async Task<IActionResult> RevokeToken([FromBody] string email)
-        {
-            //var user = 
-            return Ok();
-        }
+        // [HttpPost("refresh-token")]
+        // public async Task<IActionResult> RefreshToken([FromBody] string email)
+        // {
+        //     //var user = 
+        //     return Ok();
+        // }
+        //
+        // [HttpPost("validate-reset-token")]
+        // public async Task<IActionResult> CheckResetToken([FromBody] string email)
+        // {
+        //     //var user = 
+        //     return Ok();
+        // }
     }
 }

@@ -1,6 +1,7 @@
 using BusinessObject.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Quizlet.Services.AuthAPI.RabbitMQSender;
 using Quizlet.Services.AuthAPI.Services;
 using Quizlet.Services.AuthAPI.Services.IServices;
 using Repositories;
@@ -20,6 +21,8 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFramework
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IRabbitMQAuthMessageSender, RabbitMQAuthMessageSender>();
+
 builder.Services.AddCors();
 
 builder.Services.AddControllers();
