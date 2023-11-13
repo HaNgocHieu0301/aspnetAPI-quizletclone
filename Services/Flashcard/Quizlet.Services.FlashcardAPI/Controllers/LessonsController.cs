@@ -10,7 +10,13 @@ namespace Quizlet.Services.FlashcardAPI.Controllers
     [ApiController]
     public class LessonsController : ControllerBase
     {
-        private static readonly ILessonRepository lessonRepository = new LessonRepository();
+        private readonly ILessonRepository lessonRepository;
+
+        public LessonsController(ILessonRepository lessonRepository)
+        {
+            this.lessonRepository = lessonRepository;
+        }
+
         [HttpGet]
         [EnableQuery]
         public IActionResult Get()
@@ -67,12 +73,16 @@ namespace Quizlet.Services.FlashcardAPI.Controllers
             }
         }
 
-        [HttpPut]
-        public IActionResult Put([FromRoute] int key, [FromBody] EditLessonDTO editLessonDTO)
+        [HttpPut("UpdateLesson")]
+        public IActionResult Put([FromBody] EditLessonDTO editLessonDTO)
         {
             try
             {
-                lessonRepository.UpdateLesson(key, editLessonDTO);
+                var res = lessonRepository.UpdateLesson(editLessonDTO);
+                if(res == false)
+                {
+                    return BadRequest("Update lesson failed");
+                }
                 return Ok("Update lesson successfully");
             }
             catch (Exception e)

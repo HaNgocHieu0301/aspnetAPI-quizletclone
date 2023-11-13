@@ -17,12 +17,14 @@ namespace Repository
             lesson.CreateAt = DateTime.Now;
             return LessonDAO.AddLesson(lesson);
         }
+
         public int AddLesson(AddLessonWithQuestionDTO lessonDTO)
         {
             Lesson lesson = mapper.Map<Lesson>(lessonDTO);
             lesson.CreateAt = DateTime.Now;
             return LessonDAO.AddLesson(lesson);
         }
+
         public void DeleteLesson(int id)
         {
             Lesson lesson = LessonDAO.GetLessonById(id);
@@ -31,11 +33,17 @@ namespace Repository
 
         public List<Lesson> GetLessons() => LessonDAO.GetLessons();
 
-        public void UpdateLesson(int id, EditLessonDTO editLessonDTO)
+        public bool UpdateLesson(EditLessonDTO editLessonDTO)
         {
-            Lesson lesson = LessonDAO.GetLessonById(id);
-            lesson = mapper.Map(editLessonDTO, lesson);
-            LessonDAO.UpdateLesson(lesson);
+            Lesson lesson = LessonDAO.GetLessonById(editLessonDTO.LessonId);
+            if (lesson != null)
+            {
+                lesson = mapper.Map(editLessonDTO, lesson);
+                LessonDAO.UpdateLesson(lesson);
+                return true;
+            }
+
+            return false;
         }
     }
 }

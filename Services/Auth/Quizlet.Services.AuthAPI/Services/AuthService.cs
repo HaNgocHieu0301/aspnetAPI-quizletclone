@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Identity;
 using Quizlet.Services.AuthAPI.Services.IServices;
 using Repositories;
 using System.Text.Json;
+using System.Web;
+using Microsoft.AspNetCore.Mvc.Routing;
+using Quizlet.Services.AuthAPI.RabbitMQSender;
 
 namespace Quizlet.Services.AuthAPI.Services
 {
@@ -12,13 +15,19 @@ namespace Quizlet.Services.AuthAPI.Services
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IJwtTokenGenerator _jwtTokenGenerator;
-        public AuthService(IUserRepository userRepository, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IJwtTokenGenerator jwtTokenGenerator)
+        private readonly IRabbitMQAuthMessageSender _rabbitMQAuthMessageSender;
+
+        public AuthService(IUserRepository userRepository, UserManager<ApplicationUser> userManager,
+            RoleManager<IdentityRole> roleManager, IJwtTokenGenerator jwtTokenGenerator,
+            IRabbitMQAuthMessageSender rabbitMqAuthMessageSender)
         {
             _userRepository = userRepository;
             _roleManager = roleManager;
             _jwtTokenGenerator = jwtTokenGenerator;
+            _rabbitMQAuthMessageSender = rabbitMqAuthMessageSender;
             _userManager = userManager;
         }
+
         public async Task<LoginResponseDTO> Login(LoginRequestDTO loginRequestDTO)
         {
             //var user = _db.Users.FirstOrDefault(u => u.UserName.ToLower() == loginRequestDTO.UserName.ToLower());
@@ -84,6 +93,7 @@ namespace Quizlet.Services.AuthAPI.Services
                     //	Streak = 1,
                     //	UsingTimeDay = 0,
                     //};
+                    _rabbitMQAuthMessageSender.SendMessage(user.Email, "registeruser");
                     return "";
                 }
                 else
@@ -93,10 +103,11 @@ namespace Quizlet.Services.AuthAPI.Services
             }
             catch (Exception ex)
             {
-
             }
+
             return "Error Encountered";
         }
+
         public async Task<bool> AssignRole(ApplicationUser user, string roleName)
         {
             //var user = _db.Users.FirstOrDefault(u => u.Email.ToLower() == email.ToLower());
@@ -107,11 +118,14 @@ namespace Quizlet.Services.AuthAPI.Services
                 {
                     _roleManager.CreateAsync(new IdentityRole(roleName)).GetAwaiter().GetResult();
                 }
+
                 await _userManager.AddToRoleAsync(user, roleName);
                 return true;
             }
+
             return false;
         }
+
         public async Task<bool> AssignRole(string email, string roleName)
         {
             var user = await _userRepository.GetUserByEmailAsync(email);
@@ -121,21 +135,51 @@ namespace Quizlet.Services.AuthAPI.Services
                 {
                     _roleManager.CreateAsync(new IdentityRole(roleName)).GetAwaiter().GetResult();
                 }
+
                 await _userManager.AddToRoleAsync(user, roleName);
                 return true;
             }
+
             return false;
         }
-        public async Task<bool> ForgotPassword(string email)
+
+        public async Task<bool> RequestPasswordReset(string email)
         {
-            var user = await _userRepository.GetUserByEmailAsync(email);
+            var user = await _userManager.FindByEmailAsync(email);
             if (user != null)
             {
+                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var frontendResetPasswordUrl = "http://localhost:/reset-password";
+                var resetUrl =
+                    $"{frontendResetPasswordUrl}?token={HttpUtility.UrlEncode(token)}&email={HttpUtility.UrlEncode(email)}";
+                ResponseFogetPasswordWithToken responseFogetPasswordWithToken = new()
+                {
+                    email = email,
+                    token = token,
+                    resetUrl = resetUrl
+                };
+                _rabbitMQAuthMessageSender.SendMessage(responseFogetPasswordWithToken, "resetpassword");
+                return true;
+            }
+
+            return false;
+        }
+
+        public async Task<bool> ResetPassword(RequestChangePasswordWithToken request)
+        {
+            var user = await _userManager.FindByEmailAsync(request.email);
+            if (user == null)
+            {
+                // Xử lý khi không tìm thấy người dùng
                 return false;
             }
-            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-            //var callback = UrlHelper.Action()
-            _userManager.SetEmailAsync(user, token);
+            var result = await _userManager.ResetPasswordAsync(user, request.token, request.newPassword);
+            if (result.Succeeded)
+            {
+                // Mật khẩu đã được đặt lại thành công
+                return true;
+            }
+            // Xử lý khi token không hợp lệ hoặc có lỗi
             return false;
         }
 
@@ -146,6 +190,7 @@ namespace Quizlet.Services.AuthAPI.Services
             {
                 return true;
             }
+
             return false;
         }
 
@@ -155,7 +200,8 @@ namespace Quizlet.Services.AuthAPI.Services
             {
                 using var client = new HttpClient();
                 // Thiết lập header Authorization với Bearer token
-                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+                client.DefaultRequestHeaders.Authorization =
+                    new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
                 // Thực hiện GET request
                 var response = await client.GetAsync("https://www.googleapis.com/oauth2/v3/userinfo");
@@ -228,7 +274,10 @@ namespace Quizlet.Services.AuthAPI.Services
         public async Task<LoginResponseDTO> LoginFacebook(string token)
         {
             using var client = new HttpClient();
-            var response = await client.GetAsync("https://graph.facebook.com/me?fields=id,name,email,first_name,last_name,gender,picture&access_token=" + token);
+            var response =
+                await client.GetAsync(
+                    "https://graph.facebook.com/me?fields=id,name,email,first_name,last_name,gender,picture&access_token=" +
+                    token);
             try
             {
                 if (response.IsSuccessStatusCode)
