@@ -12,5 +12,7 @@ namespace Quizlet.Services.AuthAPI.Services.IServices
         //Task<bool> AssignRole(string email, string roleName);
         Task<bool> AssignRole(ApplicationUser user, string roleName);
         Task<bool> AssignRole(string email, string roleName);
+        Task<bool> RequestPasswordReset(string email);
+        Task<bool> ResetPassword(RequestChangePasswordWithToken request);
     }
 }
