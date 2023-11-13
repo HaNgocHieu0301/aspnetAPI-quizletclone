@@ -158,7 +158,7 @@ namespace Quizlet.Services.AuthAPI.Services
                     token = token,
                     resetUrl = resetUrl
                 };
-                _rabbitMQAuthMessageSender.SendMessage(responseFogetPasswordWithToken, "resetpassword");
+                _rabbitMQAuthMessageSender.SendMessage(responseFogetPasswordWithToken, "forgotpassword");
                 return true;
             }
 
