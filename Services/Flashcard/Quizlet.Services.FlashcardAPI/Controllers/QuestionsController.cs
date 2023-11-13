@@ -1,4 +1,5 @@
 ﻿using BusinessObject.DTOs;
+using BusinessObject.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
@@ -10,15 +11,16 @@ namespace Quizlet.Services.FlashcardAPI.Controllers
     public class QuestionsController : ODataController
     {
         private readonly IQuestionRepository QuestionRepository;
-
-        public QuestionsController(IQuestionRepository questionRepository)
+        private readonly IQuestionService QuestionService;
+        public QuestionsController(IQuestionRepository questionRepository, IQuestionService questionService)
         {
             QuestionRepository = questionRepository;
+            QuestionService = questionService;
         }
 
         #region Hieuhn_GetMethods
 
-        [HttpGet("GetByUserId/{userId}")]
+        [HttpGet("/GetByUserId/{userId}")]
         [EnableQuery]
         public IActionResult GetByUserId(string userId)
         {
@@ -32,13 +34,14 @@ namespace Quizlet.Services.FlashcardAPI.Controllers
             }
         }
 
-        [HttpGet("GetByLessonId/{lessonId}")]
+        [HttpGet("/api/[controller]/GetByLessonId/{lessonId}")]
         [EnableQuery]
         public IActionResult GetByUserId(int lessonId)
         {
             try
             {
-                return Ok(QuestionRepository.GetQuestions());
+                IEnumerable<QuestionDTO> questions = QuestionService.GetQuestionsByLessonId(lessonId);
+                return Ok(questions);
             }
             catch (Exception e)
             {
@@ -76,7 +79,7 @@ namespace Quizlet.Services.FlashcardAPI.Controllers
             }
         }
 
-        [HttpPost("/[controller]/Range")]
+        [HttpPost("/api/[controller]/Range")]
         public IActionResult PostRange([FromBody] List<AddQuestionDTO> addQuestionDTOs)
         {
             try
@@ -89,6 +92,7 @@ namespace Quizlet.Services.FlashcardAPI.Controllers
             }
         }
 
+        [HttpDelete("/api/[controller]/DeleteQuestion/{key}")]
         public IActionResult Delete([FromRoute] int key)
         {
             try
@@ -102,7 +106,7 @@ namespace Quizlet.Services.FlashcardAPI.Controllers
             }
         }
 
-        [HttpDelete("/[controller]/Range")]
+        [HttpDelete("/api/[controller]/DeleteQuestions")]
         public IActionResult DeleteRange([FromBody] List<QuestionDTO> questionDTOs)
         {
             try
@@ -115,7 +119,8 @@ namespace Quizlet.Services.FlashcardAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
-
+        
+        [HttpPut("/api/[controller]/UpdateQuestion/{key}")]
         public IActionResult Put([FromRoute] int key, [FromBody] EditQuestionDTO editQuestionDTO)
         {
             try
@@ -129,12 +134,27 @@ namespace Quizlet.Services.FlashcardAPI.Controllers
             }
         }
 
-        [HttpPut("/[controller]/Range")]
-        public IActionResult PutRange([FromBody] List<QuestionDTO> questionDTOs)
+        [HttpPut("/api/[controller]/UpdateQuestion")]
+        public IActionResult Put([FromBody] EditQuestionDTO editQuestionDto)
         {
             try
             {
-                QuestionRepository.UpdateRangeQuestion(questionDTOs);
+                QuestionRepository.UpdateQuestion(editQuestionDto.QuestionId, editQuestionDto);
+                return Ok("Update Question successfully");
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+
+        [HttpPut("/api/[controller]/UpdateQuestions")]
+        public IActionResult PutRange([FromBody] List<EditQuestionDTO> questionDTOs)
+        {
+            try
+            {
+                // QuestionRepository.UpdateRangeQuestion(questionDTOs);
+                QuestionService.UpdateRangeQuestion(questionDTOs);
                 return Ok("Update Question successfully");
             }
             catch (Exception e)

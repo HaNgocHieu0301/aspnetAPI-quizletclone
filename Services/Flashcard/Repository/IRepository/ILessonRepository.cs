@@ -7,6 +7,7 @@ namespace Repository.IRepository
     {
         List<Lesson> GetLessons();
         int AddLesson(LessonDTO lessonDTO);
+        int AddLesson(AddLessonWithQuestionDTO lessonDTO);
         void UpdateLesson(int id, EditLessonDTO editLessonDTO);
         void DeleteLesson(int id);
     }
