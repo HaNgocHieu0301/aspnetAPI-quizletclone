@@ -37,7 +37,7 @@ public class RabbitMQAuthConsumer : BackgroundService
         {
             var content = Encoding.UTF8.GetString(ea.Body.ToArray());
             String email = JsonConvert.DeserializeObject<string>(content);
-            HandleMessage(email).GetAwaiter().GetResult();
+            HandleMessage(email,stoppingToken).GetAwaiter().GetResult();
             _channel.BasicAck(ea.DeliveryTag, false);
         };
         _channel.BasicConsume("registeruser", false, registerConsumer);
@@ -48,7 +48,7 @@ public class RabbitMQAuthConsumer : BackgroundService
         {
             var content = Encoding.UTF8.GetString(ea.Body.ToArray());
             ResponseFogetPasswordWithToken obj = JsonConvert.DeserializeObject<ResponseFogetPasswordWithToken>(content);
-            HandleForgotPassword(obj).GetAwaiter().GetResult();
+            HandleForgotPassword(obj,stoppingToken).GetAwaiter().GetResult();
             _channel.BasicAck(ea.DeliveryTag, false);
         };
         _channel.BasicConsume("forgotpassword", false, forgotPasswordConsumer);
@@ -56,13 +56,13 @@ public class RabbitMQAuthConsumer : BackgroundService
         return Task.CompletedTask;
     }
 
-    private async Task HandleForgotPassword(ResponseFogetPasswordWithToken? obj)
+    private async Task HandleForgotPassword(ResponseFogetPasswordWithToken? obj, CancellationToken token)
     {
-        _emailService.ForgotPassword(obj).GetAwaiter().GetResult();
+        _emailService.ForgotPassword(obj, token).GetAwaiter().GetResult();
     }
 
-    private async Task HandleMessage(string? email)
+    private async Task HandleMessage(string? email, CancellationToken token)
     {
-        _emailService.RegisterUserEmailAndSend(email).GetAwaiter().GetResult();
+        _emailService.RegisterUserEmailAndSend(email,token).GetAwaiter().GetResult();
     }
 }
