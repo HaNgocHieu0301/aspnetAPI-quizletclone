@@ -5,14 +5,19 @@ namespace DataAccess
 {
     public class LessonDAO
     {
-        private static readonly ServicesFlashCardContext context = ServicesFlashCardContext.GetInstance();
+        // private static readonly ServicesFlashCardContext context = ServicesFlashCardContext.GetInstance();
 
-        public static List<Lesson> GetLessons() => context.Lessons.AsNoTracking().ToList();
+        public static List<Lesson> GetLessons()
+        {
+            using var context = new ServicesFlashCardContext();
+            return context.Lessons.AsNoTracking().AsQueryable().ToList();
+        }
 
         public static int AddLesson(Lesson lesson)
         {
             try
             {
+                using var context = new ServicesFlashCardContext();
                 context.Lessons.Add(lesson);
                 context.SaveChanges();
                 context.ChangeTracker.Clear();
@@ -28,6 +33,7 @@ namespace DataAccess
         {
             try
             {
+                using var context = new ServicesFlashCardContext();
                 context.Lessons.Remove(lesson);
                 context.SaveChanges();
                 context.ChangeTracker.Clear();
@@ -42,6 +48,7 @@ namespace DataAccess
         {
             try
             {
+                using var context = new ServicesFlashCardContext();
                 context.Update(lesson);
                 context.SaveChanges();
                 context.ChangeTracker.Clear();
@@ -56,6 +63,7 @@ namespace DataAccess
         {
             try
             {
+                using var context = new ServicesFlashCardContext();
                 return context.Lessons.AsNoTracking().SingleOrDefault(c => c.LessonId == id) ?? throw new Exception("Lesson does not exist");
             }
             catch (Exception)
