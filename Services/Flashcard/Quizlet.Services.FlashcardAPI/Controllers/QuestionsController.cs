@@ -1,5 +1,6 @@
 ﻿using BusinessObject.DTOs;
 using BusinessObject.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Repository.IRepository;
@@ -8,6 +9,7 @@ namespace Quizlet.Services.FlashcardAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class QuestionsController : ControllerBase
     {
         private readonly IQuestionRepository QuestionRepository;
@@ -22,6 +24,7 @@ namespace Quizlet.Services.FlashcardAPI.Controllers
 
         [HttpGet("GetByUserId/{userId}")]
         [EnableQuery]
+        [AllowAnonymous]
         public IActionResult GetByUserId(string userId)
         {
             try
@@ -36,6 +39,7 @@ namespace Quizlet.Services.FlashcardAPI.Controllers
 
         [HttpGet("GetByLessonId/{lessonId}")]
         [EnableQuery]
+        [AllowAnonymous]
         public IActionResult GetByUserId(int lessonId)
         {
             try
@@ -54,6 +58,7 @@ namespace Quizlet.Services.FlashcardAPI.Controllers
 
         [HttpGet]
         [EnableQuery]
+        [AllowAnonymous]
         public IActionResult Get()
         {
             try

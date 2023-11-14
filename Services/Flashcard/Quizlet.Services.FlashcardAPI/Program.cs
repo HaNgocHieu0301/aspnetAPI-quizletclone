@@ -1,9 +1,12 @@
 using BusinessObject.Services.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.OData;
 using Microsoft.AspNetCore.OData.Routing;
+using Microsoft.IdentityModel.Tokens;
 using Quizlet.Services.FlashcardAPI.Services.Implementations;
 using Repository;
 using Repository.IRepository;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +21,21 @@ builder.Services.AddScoped<ILessonRepository, LessonRepository>();
 builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
 
 builder.Services.AddScoped<IQuestionService, QuestionService>();
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        .AddJwtBearer(options =>
+        {
+            IConfiguration configuration = builder.Configuration;
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                ValidateIssuer = true,
+                ValidIssuer = configuration["JwtOptions:Issuer"],
+                ValidAudience = configuration["JwtOptions:Audience"],
+                ValidateAudience = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtOptions:Secret"])),
+            };
+        });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -58,6 +76,7 @@ app.Use((context, next) =>
     return next();
 });
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

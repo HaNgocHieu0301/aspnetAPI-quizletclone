@@ -1,13 +1,14 @@
 ﻿using BusinessObject.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
-using Repository;
 using Repository.IRepository;
 
 namespace Quizlet.Services.FlashcardAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class AnswersController : ControllerBase
     {
         private readonly IAnswerRepository AnswerRepository;
@@ -19,6 +20,7 @@ namespace Quizlet.Services.FlashcardAPI.Controllers
 
         [EnableQuery]
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Get()
         {
             try
