@@ -1,7 +1,5 @@
 ﻿using BusinessObject.Models;
 using MailKit.Net.Smtp;
-using MailKit.Security;
-using Microsoft.Extensions.Options;
 using MimeKit;
 using Quizlet.Services.EmailAPI.Settings;
 
@@ -14,13 +12,13 @@ public class EmailService : IEmailService
     public EmailService(MailSettings mailSettings)
     {
         _settings = mailSettings;
-        
+
     }
-    public async Task RegisterUserEmailAndSend(string? email,CancellationToken cancellationToken = new CancellationToken())
+    public async Task RegisterUserEmailAndSend(string? email, CancellationToken cancellationToken = new CancellationToken())
     {
         var emailRequest = new MailRequest
         {
-            ToAddress = "hieuhn0301@gmail.com",
+            ToAddress = email,
             Body = "Register successfully",
             Subject = "Register successfully"
         };
@@ -75,7 +73,7 @@ public class EmailService : IEmailService
         }
     }
 
-    public async Task ForgotPassword(ResponseFogetPasswordWithToken responseFogetPasswordWithToken,CancellationToken cancellationToken = new CancellationToken())
+    public async Task ForgotPassword(ResponseFogetPasswordWithToken responseFogetPasswordWithToken, CancellationToken cancellationToken = new CancellationToken())
     {
         var emailRequest = new MailRequest
         {

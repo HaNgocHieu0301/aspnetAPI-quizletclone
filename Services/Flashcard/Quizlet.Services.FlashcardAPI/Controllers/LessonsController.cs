@@ -1,13 +1,14 @@
 ﻿using BusinessObject.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
-using Repository;
 using Repository.IRepository;
 
 namespace Quizlet.Services.FlashcardAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class LessonsController : ControllerBase
     {
         private readonly ILessonRepository lessonRepository;
@@ -19,6 +20,7 @@ namespace Quizlet.Services.FlashcardAPI.Controllers
 
         [HttpGet]
         [EnableQuery]
+        [AllowAnonymous]
         public IActionResult Get()
         {
             try
@@ -36,8 +38,7 @@ namespace Quizlet.Services.FlashcardAPI.Controllers
         {
             try
             {
-                lessonRepository.AddLesson(lessonDTO);
-                return Created("Create new lesson successfully", null);
+                return Created("Create new lesson successfully", lessonRepository.AddLesson(lessonDTO));
             }
             catch (Exception e)
             {
@@ -50,8 +51,7 @@ namespace Quizlet.Services.FlashcardAPI.Controllers
         {
             try
             {
-                lessonRepository.AddLesson(lessonDTO);
-                return Created("Create new lesson successfully", null);
+                return Created("Create new lesson successfully", lessonRepository.AddLesson(lessonDTO));
             }
             catch (Exception e)
             {
@@ -79,7 +79,7 @@ namespace Quizlet.Services.FlashcardAPI.Controllers
             try
             {
                 var res = lessonRepository.UpdateLesson(editLessonDTO);
-                if(res == false)
+                if (res == false)
                 {
                     return BadRequest("Update lesson failed");
                 }
